@@ -1,0 +1,184 @@
+﻿@model IEnumerable<Pagination.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+<h1>Index</h1>
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+
+<button type="button" class="btn btn-success btn-sm" id="btnAdd" data-toggle="modal" data-target="#myModal">
+    <i class="fas fa-plus" aria-hidden="true"></i>
+    Add
+</button>
+<br />
+<br />
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Add new product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" id="addProduct">
+                    <label>Product Code</label>
+                    <input type="text" name="Product.Code" id="Code" required class="form-control" />
+                    <br />
+                    <label>Product Name</label>
+                    <input type="text" name="Product.Name" id="Name" required class="form-control" />
+                    <br /><label>Product Description</label>
+                    <input type="text" name="Product.Description" id="Description" required class="form-control" />
+                    <br /><label>Product Category</label>
+                    <input type="text" name="Product.Category" id="Category" required class="form-control" />
+                    <br /><label>Product Cost</label>
+                    <input type="text" name="Product.Cost" id="Cost" required class="form-control" />
+                    <br /><label>Product Price</label>
+                    <input type="text" name="Product.Price" id="Price" required class="form-control" />
+                    <br /><label>Product ImageUrl</label>
+                    <input type="text" name="Product.ImageUrl" id="ImageUrl" required class="form-control" />
+                    <br />
+                    <hr />
+                    <button class="btn btn-success btn-md" id="btnSaveNewProduct">
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        Save
+                    </button>
+                    <button class="btn btn-danger btn-md " data-dismiss="modal">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        Cancel
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Search-->
+<form method="get" asp-action="Index">
+        <p>
+            <input type="search"placeholder="Enter product name or description..." value="@ViewData["Getproductdetails"]" name="NameSearch" style="width: 500px;" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-action="Index">Get All Products</a>
+        </p>
+    </form>
+<!--~Search-->
+
+
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                Action
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    <img src="@item.ImageUrl">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<div class="container">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-center">
+            @if (pager.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="1">First</a>
+                </li>
+                <li>
+                    <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+                </li>
+            }
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge==pager.CurrentPage? "active" : "")">
+                    <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.CurrentPage+1)">Next</a>
+                </li>
+                <li>
+                    <a class="page-link" asp-controller="Product" asp-action="Index" asp-route-pg="@(pager.TotalPages)">Last</a>
+                </li>
+            }
+        </ul>
+    }
+
+</div>
+
+

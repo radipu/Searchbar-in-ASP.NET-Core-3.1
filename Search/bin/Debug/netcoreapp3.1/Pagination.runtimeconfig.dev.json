@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\raddu\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\raddu\\.nuget\\packages"
+    ]
+  }
+}
